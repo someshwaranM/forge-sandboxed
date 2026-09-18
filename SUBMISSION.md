@@ -4,7 +4,7 @@
 
 * **Team name:** Sandboxed
 * **Project name:** Eyewitness
-* **Members:** Mohit Paddhariya (lead), Rahil Mavani
+* **Members:** Mohit Paddhariya (lead), Rahil Mavani, Kush Anchalia
 
 ## Problem
 
