@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { NextResponse } from "next/server";
+import { withServerEvent } from "@/lib/telemetry/serverEvents";
 import { deliveryFeeFor } from "@/lib/bag";
 import { getProducts } from "@/lib/catalogue";
 import { createOrderId, type Order, type OrderRequest } from "@/lib/orders";
@@ -22,7 +23,7 @@ function isValidRequest(body: unknown): body is OrderRequest {
   );
 }
 
-export async function POST(request: Request) {
+async function handlePost(request: Request) {
   const body = await request.json().catch(() => null);
   if (!isValidRequest(body)) {
     return NextResponse.json({ error: "Invalid order" }, { status: 400 });
@@ -34,6 +35,14 @@ export async function POST(request: Request) {
   );
   if (unknownItem) {
     return NextResponse.json({ error: "Unknown product" }, { status: 400 });
+  }
+
+  if (request.headers.get("x-fault") === "slow-payment") {
+    await new Promise((resolve) => setTimeout(resolve, 8000));
+    return NextResponse.json(
+      { error: "Payment gateway timed out" },
+      { status: 504 },
+    );
   }
 
   const subtotal = body.items.reduce(
@@ -59,3 +68,5 @@ export async function POST(request: Request) {
 
   return NextResponse.json(order, { status: 201 });
 }
+
+export const POST = withServerEvent("/api/orders", handlePost);
