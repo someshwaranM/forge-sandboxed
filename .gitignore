@@ -1,8 +1,7 @@
+# env and secrets
 .env
-.env.local
-.env.*.local
+.env.*
 !.env.example
-
 *.pem
 *.p12
 *.key
@@ -11,12 +10,25 @@ id_rsa.pub
 credentials.json
 secrets.json
 
-.DS_Store
+# dependencies
 node_modules/
 __pycache__/
 .venv/
 venv/
+
+# build output
+.next/
+out/
 dist/
 build/
+next-env.d.ts
+*.tsbuildinfo
+
+# local data written at runtime (replay events, orders, run checkpoints)
+.data/
+
+# editors and os
+.DS_Store
 .idea/
 .vscode/
+*.log

@@ -1,18 +1,20 @@
-# Forge the Future Hackathon
+# Eyewitness
 
-Private team repository for the Elastic Forge the Future Hackathon.
+The incident response agent that saw it happen.
 
-## Start here
+Logs, metrics and traces describe what the backend did. None of them capture what the user actually saw. Eyewitness replays recorded sessions, watches them with a vision model, and reports only the incidents it can prove.
 
-1. Copy `.env.example` to `.env` and add your keys locally.
-2. Put application code in `src/`.
-3. Put notes, architecture, and screenshots in `docs/`.
-4. Fill in `SUBMISSION.md` as you build. Judges read that file first.
+## Layout
 
-## Credentials
+| Path             | What it is                                                                                                                                                                       |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/storefront` | A minimal ecommerce site that acts as the live product under observation. Emits session replay and RUM telemetry, and can be switched into named silent-failure modes for demos. |
 
-Do not commit AWS codes, API keys, or connection strings, even though this repository is private. Keep secrets in `.env`.
+## Run
 
-## Submit
+```bash
+npm install
+npm run dev
+```
 
-Keep `SUBMISSION.md` current through the event. Use a pull request if more than one person is changing the same files.
+The root package uses npm workspaces. `npm run dev`, `build` and `start` target the storefront; `lint` and `format` run across every app. Application code lives under `src/`, notes and screenshots under `docs/`, and `SUBMISSION.md` is the judges' entry point. See each app's README for details.
